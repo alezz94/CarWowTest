@@ -50,7 +50,7 @@ public class BitMapCreator
 		else
 		{
 			/*
-			 * Try-catch that prevents the position attributes (column and row)
+			 * Try-catch that prevents the position parameters (column and row)
 			 * to be something different that an int.
 			 */
 			try
@@ -78,7 +78,7 @@ public class BitMapCreator
 			catch (NumberFormatException e)
 			{
 				System.err.println("Error at line " + count + ": The command is invalid.");
-				System.err.println("The two attributes column and row size must be int");
+				System.err.println("The two parameters column and row size must be int");
 				System.exit(0);
 			}
 		}		
@@ -111,7 +111,7 @@ public class BitMapCreator
 	
 	/*
 	 * This method change one single pixel on the table. 
-	 * The command "L" has 3 attributes (column, row and colour),
+	 * The command "L" has 3 parameters (column, row and colour),
 	 * so the method checks if the string array spec is 4 value long. 
 	 * As the user can make a mistake and call the command with 
 	 * a number of row and column that exceeds the size of the create array,
@@ -122,12 +122,12 @@ public class BitMapCreator
 		if(spec.length==4)
 		{
 			/*
-			 * Checks if the colour attribute is a single capital letter.
+			 * Checks if the colour parameter is a single capital letter.
 			 */
 			if ((spec[3].length() == 1) && (Character.isUpperCase(spec[3].charAt(0))))
 			{
 				/*
-				 * Try-catch that prevents the position attributes (column and row)
+				 * Try-catch that prevents the position parameters (column and row)
 				 * to be something different that an int.
 				 */
 				try
@@ -135,6 +135,9 @@ public class BitMapCreator
 					int posRow = Integer.parseInt(spec[2]);
 					int posColumn = Integer.parseInt(spec[1]);
 					
+					/*
+					 * Handle IndexOutOfBound Exception for bitmap size.
+					 */					
 					try
 					{
 						bitMap[posRow-1][posColumn-1] = spec[3];
@@ -148,14 +151,14 @@ public class BitMapCreator
 				catch (NumberFormatException e)
 				{
 					System.err.println("Error at line " + count + ": The command is invalid.");
-					System.err.println("The attributes of column position and row position must be int");
+					System.err.println("The parameters of column position and row position must be int");
 					System.exit(0);
 				}
 			}
 			else
 			{
 				System.err.println("Error at line " + count + ": The command is invalid.");
-				System.err.println("The colour attribute muse be a capital letter");
+				System.err.println("The colour parameter muse be a capital letter");
 				System.exit(0);
 			}
 		}
@@ -170,7 +173,7 @@ public class BitMapCreator
 	
 	/*
 	 * This method shows the table.
-	 * As the command "S" has no attributes, it checks if the
+	 * As the command "S" has no parameters, it checks if the
 	 * command line has only 1 word. If so, the table is printed
 	 * in a new file called output.txt.
 	 */
@@ -182,7 +185,7 @@ public class BitMapCreator
 			BufferedWriter writer = null;
 			try
 			{
-				writer = new BufferedWriter(new FileWriter("output.txt"));			
+				writer = new BufferedWriter(new FileWriter("examples/output.txt"));			
 				for (int i=0; i< row; i++)
 				{
 					for (int j = 0; j< column; j++)
@@ -220,7 +223,7 @@ public class BitMapCreator
 	
 	/*
 	 * This method draws a vertical segment of colour C in column X between rows Y1 and Y2 (inclusive).
-	 * As the command "V" should have 4 attributes (column, row Y1, row Y2 and colour), it checks if the 
+	 * As the command "V" should have 4 parameters (column, row Y1, row Y2 and colour), it checks if the 
 	 * command line has 5 words. If so, the method checks that Y1 is less that Y2, otherwise it inverts
 	 * the two values, so that the vertical line is still drawn. 
 	 */
@@ -230,12 +233,12 @@ public class BitMapCreator
 		if (spec.length == 5)
 		{
 			/*
-			 * Checks if the colour attribute is a single capital letter.
+			 * Checks if the colour parameter is a single capital letter.
 			 */
 			if ((spec[4].length() == 1) && (Character.isUpperCase(spec[4].charAt(0))))
 			{
 				/*
-				 * Try-catch that prevents the position attributes (column and row)
+				 * Try-catch that prevents the position parameters (column and row)
 				 * to be something different that an int.
 				 */
 				try
@@ -250,6 +253,9 @@ public class BitMapCreator
 						toRow = temp;
 					}
 					String colour = spec[4];
+					/*
+					 * Handle IndexOutOfBound Exception for bitmap size.
+					 */
 					try
 					{
 						for (int i = fromRow-1; i<toRow; i++)
@@ -266,14 +272,14 @@ public class BitMapCreator
 				catch (NumberFormatException e)
 				{
 					System.err.println("Error at line " + count + ": The command is invalid.");
-					System.err.println("The attributes of column X, row Y1 and rowY2 must be int");
+					System.err.println("The parameters of column X, row Y1 and rowY2 must be int");
 					System.exit(0);
 				}
 			}
 			else
 			{
 				System.err.println("Error at line " + count + ": The command is invalid.");
-				System.err.println("The colour attribute muse be a capital letter");
+				System.err.println("The colour parameter muse be a capital letter");
 				System.exit(0);
 			}
 		}
@@ -286,7 +292,7 @@ public class BitMapCreator
 	
 	/*
 	 * This method draws a horizontal segment of colour C in row Y between columns X1 and X2 (inclusive).
-	 * As the command "H" should have 4 attributes (column X1, column X2, row and colour), it checks if the 
+	 * As the command "H" should have 4 parameters (column X1, column X2, row and colour), it checks if the 
 	 * command line has 5 words. If so, the method checks that X1 is less that X2, otherwise it inverts
 	 * the two values, so that the horizontal line is still drawn. 	
 	 */
@@ -295,12 +301,12 @@ public class BitMapCreator
 		if (spec.length == 5)
 		{
 			/*
-			 * Checks if the colour attribute is a single capital letter.
+			 * Checks if the colour parameter is a single capital letter.
 			 */
 			if ((spec[4].length() == 1) && (Character.isUpperCase(spec[4].charAt(0))))
 			{
 				/*
-				 * Try-catch that prevents the position attributes (column and row)
+				 * Try-catch that prevents the position parameters (column and row)
 				 * to be something different that an int.
 				 */
 				try
@@ -308,6 +314,7 @@ public class BitMapCreator
 					int posRow = Integer.parseInt(spec[3]);
 					int fromColumn = Integer.parseInt(spec[1]);
 					int toColumn = Integer.parseInt(spec[2]);
+					
 					if (fromColumn > toColumn)
 					{
 						int temp = fromColumn;
@@ -315,6 +322,9 @@ public class BitMapCreator
 						toColumn = temp;
 					}
 					String colour = spec[4];
+					/*
+					 * Handle IndexOutOfBound Exception for bitmap size.
+					 */
 					try
 					{
 						for (int i = fromColumn-1; i<toColumn; i++)
@@ -331,7 +341,7 @@ public class BitMapCreator
 				catch (NumberFormatException e)
 				{
 					System.err.println("Error at line " + count + ": The command is invalid.");
-					System.err.println("The attributes of column X1, column X2 and row Y must be int");
+					System.err.println("The parameters of column X1, column X2 and row Y must be int");
 					System.exit(0);
 				}
 			
@@ -339,7 +349,7 @@ public class BitMapCreator
 			else
 			{
 				System.err.println("Error at line " + count + ": The command is invalid.");
-				System.err.println("The colour attribute muse be a capital letter");
+				System.err.println("The colour parameter muse be a capital letter");
 				System.exit(0);
 			}
 			
@@ -409,7 +419,7 @@ public class BitMapCreator
 					{
 						/*
 						 * Switch-case to see which command is called at each line. 
-						 * Every method has two attributes, the line specs which is
+						 * Every method has two parameters, the line specs which is
 						 * the command line, and countLine. the variable countLine
 						 * allows to tell the user at which line the error in the spec file
 						 * is located. 
