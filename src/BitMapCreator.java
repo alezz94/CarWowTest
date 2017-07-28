@@ -1,12 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
-public class BitMapEditor
+public class BitMapCreator
 {	
 	private static String fileName;
 	private static Scanner keyboard;
@@ -131,20 +133,44 @@ public class BitMapEditor
 	/*
 	 * This method shows the table.
 	 * As the command "S" has no attributes, it checks if the
-	 * command line has only 1 word. If so, the table is shown.
+	 * command line has only 1 word. If so, the table is printed
+	 * in a new file called output.txt.
 	 */
 	
 	private static void showGrid(String[] spec, int count)
 	{
 		if (spec.length == 1)
 		{
-			for (int i=0; i< row; i++)
+			BufferedWriter writer = null;
+			try
 			{
-				for (int j = 0; j< column; j++)
+				writer = new BufferedWriter(new FileWriter("output.txt"));			
+				for (int i=0; i< row; i++)
 				{
-					System.out.print(bitMap[i][j] + " ");
+					for (int j = 0; j< column; j++)
+					{
+						writer.write(bitMap[i][j] + "  ");
+					}
+					writer.newLine();
 				}
-				System.out.println();
+			}
+			catch (IOException e)
+			{
+				System.err.println("An error occured while writing on output file");
+				System.exit(0);
+			}
+			finally
+			{
+				try
+				{
+					if (writer != null)
+						writer.close();
+				}
+				catch (IOException e)
+				{
+					System.err.println("An error occured while writing on output file");
+					System.exit(0);
+				}
 			}
 		}
 		else
@@ -325,6 +351,7 @@ public class BitMapEditor
 				}
 				line = reader.readLine();
 			}
+			reader.close();
 		}
 		catch (IOException ex)
 		{
