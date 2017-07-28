@@ -49,23 +49,36 @@ public class BitMapCreator
 		}
 		else
 		{
-			column = Integer.parseInt(spec[1]);
-			row = Integer.parseInt(spec[2]);
-			if ((column >=1 && column <=250) && (row >=1 && row <= 250))
+			/*
+			 * Try-catch that prevents the position attributes (column and row)
+			 * to be something different that an int.
+			 */
+			try
 			{
-				bitMap = new String[row][column];
-				for (int i = 0; i< row; i++)
+				column = Integer.parseInt(spec[1]);
+				row = Integer.parseInt(spec[2]);
+				if ((column >=1 && column <=250) && (row >=1 && row <= 250))
 				{
-					for (int j = 0; j< column; j++)
+					bitMap = new String[row][column];
+					for (int i = 0; i< row; i++)
 					{
-						bitMap[i][j] = "O";
+						for (int j = 0; j< column; j++)
+						{
+							bitMap[i][j] = "O";
+						}
 					}
 				}
+			
+				else
+				{
+					System.err.println("Error at line " + count + ": The max size is 250 and min is 0.");
+					System.exit(0);
+				}
 			}
-		
-			else
+			catch (NumberFormatException e)
 			{
-				System.err.println("Error at line " + count + ": The max size is 250 and min is 0.");
+				System.err.println("Error at line " + count + ": The command is invalid.");
+				System.err.println("The two attributes column and row size must be int");
 				System.exit(0);
 			}
 		}		
@@ -108,16 +121,41 @@ public class BitMapCreator
 	{
 		if(spec.length==4)
 		{
-			int posRow = Integer.parseInt(spec[2]);
-			int posColumn = Integer.parseInt(spec[1]);
-			
-			try
+			/*
+			 * Checks if the colour attribute is a single capital letter.
+			 */
+			if ((spec[3].length() == 1) && (Character.isUpperCase(spec[3].charAt(0))))
 			{
-				bitMap[posRow-1][posColumn-1] = spec[3];
+				/*
+				 * Try-catch that prevents the position attributes (column and row)
+				 * to be something different that an int.
+				 */
+				try
+				{
+					int posRow = Integer.parseInt(spec[2]);
+					int posColumn = Integer.parseInt(spec[1]);
+					
+					try
+					{
+						bitMap[posRow-1][posColumn-1] = spec[3];
+					}
+					catch (ArrayIndexOutOfBoundsException ex)
+					{
+						System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+						System.exit(0);
+					}
+					}
+				catch (NumberFormatException e)
+				{
+					System.err.println("Error at line " + count + ": The command is invalid.");
+					System.err.println("The attributes of column position and row position must be int");
+					System.exit(0);
+				}
 			}
-			catch (ArrayIndexOutOfBoundsException ex)
+			else
 			{
-				System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+				System.err.println("Error at line " + count + ": The command is invalid.");
+				System.err.println("The colour attribute muse be a capital letter");
 				System.exit(0);
 			}
 		}
@@ -191,26 +229,51 @@ public class BitMapCreator
 	{
 		if (spec.length == 5)
 		{
-			int posColumn = Integer.parseInt(spec[1]);
-			int fromRow = Integer.parseInt(spec[2]);
-			int toRow = Integer.parseInt(spec[3]);
-			if (fromRow > toRow)
+			/*
+			 * Checks if the colour attribute is a single capital letter.
+			 */
+			if ((spec[4].length() == 1) && (Character.isUpperCase(spec[4].charAt(0))))
 			{
-				int temp = fromRow;
-				fromRow = toRow;
-				toRow = temp;
-			}
-			String colour = spec[4];
-			try
-			{
-				for (int i = fromRow-1; i<toRow; i++)
+				/*
+				 * Try-catch that prevents the position attributes (column and row)
+				 * to be something different that an int.
+				 */
+				try
 				{
-					bitMap[i][posColumn-1] = colour;
+					int posColumn = Integer.parseInt(spec[1]);
+					int fromRow = Integer.parseInt(spec[2]);
+					int toRow = Integer.parseInt(spec[3]);
+					if (fromRow > toRow)
+					{
+						int temp = fromRow;
+						fromRow = toRow;
+						toRow = temp;
+					}
+					String colour = spec[4];
+					try
+					{
+						for (int i = fromRow-1; i<toRow; i++)
+						{
+							bitMap[i][posColumn-1] = colour;
+						}
+					}
+					catch (ArrayIndexOutOfBoundsException ex)
+					{
+						System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+						System.exit(0);
+					}
+				}
+				catch (NumberFormatException e)
+				{
+					System.err.println("Error at line " + count + ": The command is invalid.");
+					System.err.println("The attributes of column X, row Y1 and rowY2 must be int");
+					System.exit(0);
 				}
 			}
-			catch (ArrayIndexOutOfBoundsException ex)
+			else
 			{
-				System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+				System.err.println("Error at line " + count + ": The command is invalid.");
+				System.err.println("The colour attribute muse be a capital letter");
 				System.exit(0);
 			}
 		}
@@ -231,26 +294,52 @@ public class BitMapCreator
 	{
 		if (spec.length == 5)
 		{
-			int posRow = Integer.parseInt(spec[3]);
-			int fromColumn = Integer.parseInt(spec[1]);
-			int toColumn = Integer.parseInt(spec[2]);
-			if (fromColumn > toColumn)
+			/*
+			 * Checks if the colour attribute is a single capital letter.
+			 */
+			if ((spec[4].length() == 1) && (Character.isUpperCase(spec[4].charAt(0))))
 			{
-				int temp = fromColumn;
-				fromColumn = toColumn;
-				toColumn = temp;
-			}
-			String colour = spec[4];
-			try
-			{
-				for (int i = fromColumn-1; i<toColumn; i++)
+				/*
+				 * Try-catch that prevents the position attributes (column and row)
+				 * to be something different that an int.
+				 */
+				try
 				{
-					bitMap[posRow-1][i] = colour;
+					int posRow = Integer.parseInt(spec[3]);
+					int fromColumn = Integer.parseInt(spec[1]);
+					int toColumn = Integer.parseInt(spec[2]);
+					if (fromColumn > toColumn)
+					{
+						int temp = fromColumn;
+						fromColumn = toColumn;
+						toColumn = temp;
+					}
+					String colour = spec[4];
+					try
+					{
+						for (int i = fromColumn-1; i<toColumn; i++)
+						{
+							bitMap[posRow-1][i] = colour;
+						}
+					}
+					catch (ArrayIndexOutOfBoundsException ex)
+					{
+						System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+						System.exit(0);
+					}
 				}
+				catch (NumberFormatException e)
+				{
+					System.err.println("Error at line " + count + ": The command is invalid.");
+					System.err.println("The attributes of column X1, column X2 and row Y must be int");
+					System.exit(0);
+				}
+			
 			}
-			catch (ArrayIndexOutOfBoundsException ex)
+			else
 			{
-				System.err.println("Error at line " + count + ": limit of the grid exceeded.");
+				System.err.println("Error at line " + count + ": The command is invalid.");
+				System.err.println("The colour attribute muse be a capital letter");
 				System.exit(0);
 			}
 			
